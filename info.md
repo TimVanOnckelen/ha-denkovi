@@ -48,5 +48,6 @@ All entities use custom labels from your device configuration!
 ## Support
 
 For issues, feature requests, or questions:
+
 - [GitHub Issues](https://github.com/timvanonckelen/ha-denkovi/issues)
 - [Documentation](https://github.com/timvanonckelen/ha-denkovi)
