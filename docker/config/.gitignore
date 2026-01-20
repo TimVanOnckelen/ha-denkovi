@@ -1,0 +1,12 @@
+.HA_VERSION
+home-assistant.log
+home-assistant_v2.db
+*.db-shm
+*.db-wal
+*.log
+.cloud/
+.storage/
+deps/
+tts/
+www/
+blueprints/
