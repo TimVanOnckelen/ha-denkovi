@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - 2026-01-22
 
 ### Added
+
 - Number entities for analog output control (0-1023 range)
 - Slider controls for each analog output with custom labels
 
 ### Changed
+
 - Optimized state updates for instant UI feedback
 - Control commands now parse API response immediately instead of waiting for next poll
 - Reduced UI update delay from up to 10 seconds to network latency (~50-200ms)
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-01-20
 
 ### Added
+
 - Initial release
 - Support for Denkovi SmartDEN IP-Maxi devices
 - Control up to 8 relays via switches or lights
@@ -36,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integration icon
 
 ### Features
+
 - Automatic entity naming from device labels
 - Device info with manufacturer, model, and uptime
 - Temperature sensors with proper device class
