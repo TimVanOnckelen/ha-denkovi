@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.0] - 2026-01-22
 
 ### Added
-
 - Full support for Denkovi SmartDEN Notifier devices
 - Support for up to 16 digital inputs (Notifier)
 - Support for 8 dedicated temperature sensors (Notifier)
@@ -16,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dynamic platform loading - only loads relevant platforms for each device type
 
 ### Changed
-
 - Device model now automatically detected (IP-Maxi vs Notifier)
 - Improved device info display with correct model names
 - Coordinator now supports both device types seamlessly
@@ -24,19 +22,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - 2026-01-22
 
 ### Added
-
 - Configurable polling interval (5-60 seconds) in options
 - Persistent session with connection pooling for improved performance
 - Optimistic updates - UI responds instantly before API confirmation
 
 ### Changed
-
 - Improved connection performance with TCP connector pooling
 - Reduced network overhead by reusing HTTP sessions
 - UI feedback is now instant with automatic rollback on errors
 
 ### Fixed
-
 - Proper session cleanup on integration unload
 - Memory leak from unclosed HTTP sessions
 

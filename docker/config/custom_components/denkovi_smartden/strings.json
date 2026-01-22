@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Denkovi SmartDEN",
+        "description": "Enter the connection details for your Denkovi SmartDEN device.",
+        "data": {
+          "host": "Host (IP address or hostname)",
+          "port": "Port (default: 80)",
+          "password": "Password (default: admin)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the device. Please check the host, port, and password.",
+      "unknown": "Unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Denkovi SmartDEN",
+        "description": "Configure relay types and update interval.",
+        "data": {
+          "light_relays": "Relays to expose as lights",
+          "scan_interval": "Polling interval (seconds, 5-60)"
+        }
+      }
+    }
+  }
+}

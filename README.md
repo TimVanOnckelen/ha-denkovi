@@ -7,18 +7,22 @@ A custom Home Assistant integration for controlling Denkovi SmartDEN relay board
 
 ## Features
 
-- 🔌 **Full Device Support**: Control up to 8 relays and 8 analog outputs, monitor 8 digital inputs, 8 analog inputs, and temperature sensors
+- 🔌 **Full Device Support**:
+  - **IP-Maxi**: Control up to 8 relays and 8 analog outputs, monitor 8 digital inputs, 8 analog inputs, and temperature sensors
+  - **Notifier**: Monitor 16 digital inputs, 8 analog inputs, and 8 dedicated temperature sensors
 - 🏠 **Device Grouping**: All entities grouped under a single device for clean organization
-- 💡 **Flexible Entity Types**: Configure relays as switches or lights
-- 🎚️ **Analog Output Control**: Slider controls for analog outputs (0-1023 range)
+- 💡 **Flexible Entity Types**: Configure relays as switches or lights (IP-Maxi)
+- 🎚️ **Analog Output Control**: Slider controls for analog outputs (0-1023 range, IP-Maxi)
 - 🏷️ **Custom Labels**: Automatically uses device-configured names for entities
 - ⚡ **Instant Feedback**: Optimized state updates with no polling delay
 - 🔐 **Secure**: Password authentication support
 - ⚙️ **Easy Configuration**: Simple UI-based setup through Home Assistant
+- 🔍 **Auto-Detection**: Automatically detects device type and configures appropriate entities
 
 ## Supported Devices
 
-- Denkovi SmartDEN IP-Maxi
+- **Denkovi SmartDEN IP-Maxi** - Full control board with relays, analog outputs, and inputs
+- **Denkovi SmartDEN Notifier** - Monitoring board with 16 digital inputs, 8 analog inputs, and 8 temperature sensors
 - Other Denkovi SmartDEN devices using the JSON HTTP API
 
 ## Installation
@@ -159,17 +163,23 @@ logger:
 2. Start Home Assistant:
 
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 3. Access Home Assistant at http://localhost:8123
 
 4. View logs:
+
    ```bash
-   docker-compose logs -f
+   docker compose logs -f
    ```
 
-The integration is automatically loaded via volume mount. Changes to code are reflected after restarting Home Assistant.
+5. Restart after code changes:
+   ```bash
+   docker compose restart
+   ```
+
+The integration source code is mounted directly from `custom_components/denkovi_smartden/` into the container. After making code changes, simply restart the container to reload the integration.
 
 ## Contributing
 
