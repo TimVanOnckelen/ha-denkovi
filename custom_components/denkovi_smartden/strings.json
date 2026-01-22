@@ -23,9 +23,10 @@
     "step": {
       "init": {
         "title": "Configure Denkovi SmartDEN",
-        "description": "Select which relays should be exposed as lights instead of switches.",
+        "description": "Configure relay types and update interval.",
         "data": {
-          "light_relays": "Relays to expose as lights"
+          "light_relays": "Relays to expose as lights",
+          "scan_interval": "Polling interval (seconds, 5-60)"
         }
       }
     }

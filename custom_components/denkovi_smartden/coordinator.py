@@ -10,7 +10,7 @@ import aiohttp
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -24,25 +24,31 @@ class DenkoviDataUpdateCoordinator(DataUpdateCoordinator):
         host: str,
         port: int,
         password: str,
+        scan_interval: int,
     ) -> None:
         """Initialize."""
         self.host = host
         self.port = port
         self.password = password
-        self._session: aiohttp.ClientSession | None = None
+        
+        # Create persistent session with connection pooling
+        connector = aiohttp.TCPConnector(
+            limit=10,
+            limit_per_host=5,
+            ttl_dns_cache=300,
+            enable_cleanup_closed=True,
+        )
+        self._session = aiohttp.ClientSession(connector=connector)
 
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=DEFAULT_SCAN_INTERVAL),
+            update_interval=timedelta(seconds=scan_interval),
         )
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch data from Denkovi SmartDEN."""
-        if self._session is None:
-            self._session = aiohttp.ClientSession()
-
         url = f"http://{self.host}:{self.port}/current_state.json?pw={self.password}"
 
         try:
@@ -142,8 +148,10 @@ class DenkoviDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def async_set_relay(self, relay_id: int, state: bool) -> None:
         """Set relay state."""
-        if self._session is None:
-            self._session = aiohttp.ClientSession()
+        # Optimistic update - set state immediately
+        current_data = dict(self.data)
+        current_data["relays"][relay_id] = state
+        self.async_set_updated_data(current_data)
 
         # Denkovi uses 1 for ON, 0 for OFF
         state_value = 1 if state else 0
@@ -156,17 +164,21 @@ class DenkoviDataUpdateCoordinator(DataUpdateCoordinator):
                 if response.status != 200:
                     raise UpdateFailed(f"Error setting relay: HTTP {response.status}")
                 
-                # Parse response immediately for instant state update
+                # Parse response to confirm state
                 json_data = await response.json()
                 self.async_set_updated_data(self._parse_json(json_data))
 
         except aiohttp.ClientError as err:
+            # Roll back on error - request refresh to get actual state
+            await self.async_request_refresh()
             raise UpdateFailed(f"Error communicating with device: {err}") from err
 
     async def async_set_analog_output(self, output_id: int, value: int) -> None:
         """Set analog output value."""
-        if self._session is None:
-            self._session = aiohttp.ClientSession()
+        # Optimistic update - set value immediately
+        current_data = dict(self.data)
+        current_data["analog_outputs"][output_id] = value
+        self.async_set_updated_data(current_data)
 
         url = f"http://{self.host}:{self.port}/current_state.json?pw={self.password}&AnalogOutput{output_id}={value}"
 
@@ -177,11 +189,13 @@ class DenkoviDataUpdateCoordinator(DataUpdateCoordinator):
                 if response.status != 200:
                     raise UpdateFailed(f"Error setting analog output: HTTP {response.status}")
                 
-                # Parse response immediately for instant state update
+                # Parse response to confirm value
                 json_data = await response.json()
                 self.async_set_updated_data(self._parse_json(json_data))
 
         except aiohttp.ClientError as err:
+            # Roll back on error - request refresh to get actual state
+            await self.async_request_refresh()
             raise UpdateFailed(f"Error communicating with device: {err}") from err
 
     async def async_shutdown(self) -> None:

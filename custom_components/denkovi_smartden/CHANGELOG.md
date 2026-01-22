@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-22
+
+### Added
+- Configurable polling interval (5-60 seconds) in options
+- Persistent session with connection pooling for improved performance
+- Optimistic updates - UI responds instantly before API confirmation
+
+### Changed
+- Improved connection performance with TCP connector pooling
+- Reduced network overhead by reusing HTTP sessions
+- UI feedback is now instant with automatic rollback on errors
+
+### Fixed
+- Proper session cleanup on integration unload
+- Memory leak from unclosed HTTP sessions
+
 ## [1.1.0] - 2026-01-22
 
 ### Added

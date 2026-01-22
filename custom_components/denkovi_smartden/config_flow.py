@@ -14,7 +14,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 
-from .const import DEFAULT_PASSWORD, DEFAULT_PORT, DOMAIN
+from .const import CONF_SCAN_INTERVAL, DEFAULT_PASSWORD, DEFAULT_PORT, DEFAULT_SCAN_INTERVAL, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -107,10 +107,11 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
 
-        # Get current light relay configuration
+        # Get current configuration
         current_light_relays = self.config_entry.options.get("light_relays", [])
+        current_scan_interval = self.config_entry.options.get("scan_interval", DEFAULT_SCAN_INTERVAL)
 
-        # Create multi-select options for relays 1-8
+        # Create options schema
         options_schema = vol.Schema(
             {
                 vol.Optional(
@@ -126,6 +127,11 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     7: "Relay 7",
                     8: "Relay 8",
                 }),
+                vol.Optional(
+                    CONF_SCAN_INTERVAL,
+                    default=current_scan_interval,
+                    description={"suggested_value": current_scan_interval},
+                ): vol.All(vol.Coerce(int), vol.Range(min=5, max=60)),
             }
         )
 

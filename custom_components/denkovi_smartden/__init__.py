@@ -9,7 +9,7 @@ from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
-from .const import DEFAULT_PASSWORD, DEFAULT_PORT, DOMAIN
+from .const import CONF_SCAN_INTERVAL, DEFAULT_PASSWORD, DEFAULT_PORT, DEFAULT_SCAN_INTERVAL, DOMAIN
 from .coordinator import DenkoviDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -22,8 +22,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data[CONF_HOST]
     port = entry.data.get(CONF_PORT, DEFAULT_PORT)
     password = entry.data.get(CONF_PASSWORD, DEFAULT_PASSWORD)
+    scan_interval = entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
 
-    coordinator = DenkoviDataUpdateCoordinator(hass, host, port, password)
+    coordinator = DenkoviDataUpdateCoordinator(hass, host, port, password, scan_interval)
     
     try:
         await coordinator.async_config_entry_first_refresh()
@@ -49,6 +50,7 @@ async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data[DOMAIN].pop(entry.entry_id)
+        coordinator = hass.data[DOMAIN].pop(entry.entry_id)
+        await coordinator.async_shutdown()
 
     return unload_ok
