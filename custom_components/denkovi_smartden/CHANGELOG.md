@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-22
+
+### Added
+- Number entities for analog output control (0-1023 range)
+- Slider controls for each analog output with custom labels
+
+### Changed
+- Optimized state updates for instant UI feedback
+- Control commands now parse API response immediately instead of waiting for next poll
+- Reduced UI update delay from up to 10 seconds to network latency (~50-200ms)
+
 ## [1.0.0] - 2026-01-20
 
 ### Added

@@ -7,11 +7,12 @@ A custom Home Assistant integration for controlling Denkovi SmartDEN relay board
 
 ## Features
 
-- 🔌 **Full Device Support**: Control up to 8 relays, monitor 8 digital inputs, 8 analog inputs, and temperature sensors
+- 🔌 **Full Device Support**: Control up to 8 relays and 8 analog outputs, monitor 8 digital inputs, 8 analog inputs, and temperature sensors
 - 🏠 **Device Grouping**: All entities grouped under a single device for clean organization
 - 💡 **Flexible Entity Types**: Configure relays as switches or lights
+- 🎚️ **Analog Output Control**: Slider controls for analog outputs (0-1023 range)
 - 🏷️ **Custom Labels**: Automatically uses device-configured names for entities
-- 🔄 **Real-time Updates**: Local polling for instant state updates (10-second interval)
+- ⚡ **Instant Feedback**: Optimized state updates with no polling delay
 - 🔐 **Secure**: Password authentication support
 - ⚙️ **Easy Configuration**: Simple UI-based setup through Home Assistant
 
@@ -72,6 +73,7 @@ The integration creates the following entities:
 | -------------------- | ---------------------------------------------------- | ------------ |
 | Switch               | Relay switches (excludes those configured as lights) | Up to 8      |
 | Light                | Relays configured as lights                          | Configurable |
+| Number               | Analog output controls (0-1023 slider)               | Up to 8      |
 | Binary Sensor        | Digital input states                                 | Up to 8      |
 | Sensor (Counter)     | Pulse counters for digital inputs                    | Up to 8      |
 | Sensor (Analog)      | Analog input values                                  | Up to 4      |

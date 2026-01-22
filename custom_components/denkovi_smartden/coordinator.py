@@ -156,8 +156,9 @@ class DenkoviDataUpdateCoordinator(DataUpdateCoordinator):
                 if response.status != 200:
                     raise UpdateFailed(f"Error setting relay: HTTP {response.status}")
                 
-                # Immediately update coordinator data
-                await self.async_request_refresh()
+                # Parse response immediately for instant state update
+                json_data = await response.json()
+                self.async_set_updated_data(self._parse_json(json_data))
 
         except aiohttp.ClientError as err:
             raise UpdateFailed(f"Error communicating with device: {err}") from err
@@ -176,8 +177,9 @@ class DenkoviDataUpdateCoordinator(DataUpdateCoordinator):
                 if response.status != 200:
                     raise UpdateFailed(f"Error setting analog output: HTTP {response.status}")
                 
-                # Immediately update coordinator data
-                await self.async_request_refresh()
+                # Parse response immediately for instant state update
+                json_data = await response.json()
+                self.async_set_updated_data(self._parse_json(json_data))
 
         except aiohttp.ClientError as err:
             raise UpdateFailed(f"Error communicating with device: {err}") from err
